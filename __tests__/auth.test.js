@@ -17,4 +17,20 @@ describe('app routes', () => {
   afterAll(() => {
     return mongoose.connection.close();
   });
+
+  it('can create a user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test@test.com',
+        password: '12345'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'test@test.com',
+          __v: 0 
+        });
+      }); 
+  });
 });
