@@ -78,4 +78,30 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('has a cookie on signup', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test@test.com',
+        password: '12345'
+      })
+      .then(res => {
+        expect(res.headers['set-cookie'][0]).toEqual(expect.any(String));
+      }); 
+  });
+
+  it('has a cookie on login', async() => {
+    await User.create({ email: 'test@test.com', password: 'abc123' });
+
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test@test.com',
+        password: 'abc123'
+      })
+      .then(res => {
+        expect(res.headers['set-cookie'][0]).toEqual(expect.any(String));
+      }); 
+  });
 });
